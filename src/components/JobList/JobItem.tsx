@@ -6,7 +6,6 @@ import {favoriteJobsAtom, jobOnPreviewIDAtom} from "../../constants/atoms";
 import JobDescription from "../JobDescription/JobDescription";
 import JobLabel from "./JobLabel";
 import { getAccessToken, useWindowDimensions } from "../../scripts/utils";
-import axios from "axios";
 import { useNavigate } from "react-router";
 
 type JobItemProps = {
@@ -66,20 +65,6 @@ const JobItem = (props: JobItemProps) => {
 
   const onDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
-    axios
-      .delete(`http://localhost:8000/api/jobs/${job.id}/`, {
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        navigate(0);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   const onToggleShowConfirmDelete = (

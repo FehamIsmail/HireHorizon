@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {countryList} from "../constants/constants";
 import {thinScrollBarStyle} from "../constants/styles";
-import axios from "axios";
 import {createArrayFromStrings, getAccessToken} from "../scripts/utils";
 import {useRecoilValue, useSetRecoilState} from "recoil";
 import {userTypeAtom} from "../constants/atoms";
@@ -60,45 +59,11 @@ export default function UserForm() {
     if(!studentInfo.education_level)
       alert('Please select an education level')
     const data = role === "STUDENT" ? {...userInfo, ...studentInfo, profile_picture} : {...userInfo, ...employerInfo, profile_picture}
-    axios.put('http://localhost:8000/api/profile/', data,{
-          headers: {
-            Authorization: `Bearer ${getAccessToken()}`,
-            "Content-Type": 'multipart/form-data'
-          },
-        }
-    ).then(res => {
-      if(res.status === 200)
-        setStatus({type: 'success', message: 'Changes successfully saved'})
-      navigate('.', {replace: true})
-    }).catch(err => {
-      console.log(err.response.data)
-      const response_messages: string[] = createArrayFromStrings(err.response.data)
-      setStatus({type:'error', message:'Ensure that these requirements are met:', messages: response_messages})
-    })
+
   }
 
   const getUserInfo = () => {
-    axios.get('http://localhost:8000/api/profile/', {
-      headers: {
-        Authorization: `Bearer ${getAccessToken()}`,
-      },
-    })
-        .then((response: any) => {
-          const profile = response.data.profile
-          const userInfo = response.data.user
-          if('id' in profile)
-            delete profile.id
-          if(profile.profile_picture)
-            profile.profile_picture = 'http://localhost:8000' + profile.profile_picture
-          if(userInfo.role === "STUDENT")
-            setStudentInfo(prevState => ({...prevState, ...profile}))
-          if(userInfo.role === "EMPLOYER")
-            setEmployerInfo(prevState => ({...prevState, ...profile}))
-          setUserInfo(userInfo);
-        })
-        .catch(error => {
-          console.error(error);
-        });
+
   }
 
   useEffect(() => {

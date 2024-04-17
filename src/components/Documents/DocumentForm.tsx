@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Document, StatusType} from '../../constants/types'
 import * as utils from '../../scripts/DocumentUtils'
-import {getAttributeName, getEndpoint} from "../../scripts/DocumentUtils";
 
 
 const empty_document:Document = {

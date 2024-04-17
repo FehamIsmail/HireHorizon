@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import {convertStatusToNumber, ErrorList, getAccessToken} from "../scripts/utils";
-import axios from "axios";
 import {
   CandidateType,
   Document,
@@ -27,57 +26,6 @@ export default function Candidate() {
   const params = useParams();
   const { jobID } = params;
 
-  useEffect(() => {
-    const headers: any = { "Content-Type": "application/json" };
-    headers.Authorization = `Bearer ${getAccessToken()}`;
-
-    axios({
-      method: "get",
-      url: `http://localhost:8000/api/jobs/${jobID}/1/`,
-      headers,
-    })
-      .then((res) => {
-        const createCandidates = (data: any) => {
-          return data.map((candidate: any) => {
-            console.log(candidate.updated_at)
-            return {
-              id: candidate.id,
-              name: `${candidate.application_package.user.first_name} ${candidate.application_package.user.last_name}`,
-              email: candidate.application_package.user.email,
-              profile_picture:
-                candidate.application_package.student_profile.profile_picture,
-              applied_date: new Date(candidate.updated_at),
-              status: candidate.status,
-            };
-          });
-        };
-
-        const createDocuments = (data: any) => {
-          return data.map((candidate: any) => {
-            return {
-              id: candidate.application_package.id,
-              file: candidate.application_package.curriculum_vitae
-                .curriculum_vitae,
-              file2: candidate.application_package.cover_letter?.cover_letter,
-              title: "N/A",
-              default: false,
-              type: "APP_PKG",
-            };
-          });
-        };
-
-        setApplicants(createCandidates(res.data.candidates));
-        setStudentProfiles(
-          res.data.candidates.map(
-            (candidate: any) => candidate.application_package.student_profile
-          )
-        );
-        setDocuments(createDocuments(res.data.candidates));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [forceRefresh]);
 
   const onChangeHandler = (applicant: CandidateType) => {
     if (moveCandidateToNextState.length === 0) {
@@ -123,21 +71,6 @@ export default function Candidate() {
     };
     const phase_number = convertStatusToNumber(moveCandidateToNextState[0].status)
 
-    axios
-      .post(`http://localhost:8000/api/jobs/${jobID}/${phase_number}/`, body, {headers})
-      .then((res) => {
-        console.log(res);
-        setMoveCandidateToNextState([]);
-        if (res.status == 200)
-          setStatus({
-            type: "success",
-            message: "Candidates moved successfully",
-          });
-          setForceRefresh(!forceRefresh);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   }
 
   return (

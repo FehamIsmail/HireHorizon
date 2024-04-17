@@ -8,7 +8,6 @@ import React, {useEffect} from "react";
 import {useRecoilValue, useSetRecoilState} from "recoil";
 import {authAtom, filteredJobListSelector, jobListAtom, showApplyPopupState} from "../constants/atoms";
 import {getAccessToken} from "../scripts/utils";
-import {JobType} from "../constants/types";
 import {ApplyBox} from "../components/ApplyBox/ApplyBox";
 
 export const LandingPage = () => {

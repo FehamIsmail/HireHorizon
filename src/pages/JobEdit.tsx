@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { createArrayFromStrings, ErrorList, getAccessToken } from "../scripts/utils";
-import axios from "axios";
 import { DefaultJobPic, dict, IJob, JobType, StatusType } from "../constants/types";
 import { authAtom, jobListAtom, userTypeAtom } from "../constants/atoms";
 import { useNavigate, useParams } from "react-router";
@@ -119,17 +118,9 @@ export default function JobEdit() {
         const headers: any = { "Content-Type": "application/json" };
         headers.Authorization = `Bearer ${getAccessToken()}`;
     
-        axios({
-          method: "get",
-          url: `http://localhost:8000/api/jobs/${jobID}/`,
-          headers,
-        })
-          .then((res) => {
-          setJobInfo(res.data);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+
+          // setJobInfo(res.data);
+          //   console.log(err)
     },[]);
 
     useEffect(() => {
@@ -159,30 +150,16 @@ export default function JobEdit() {
             const DefaultJobPictureFILE = await utils.createFileObjectFromImageUrl(DefaultJobPic, 'default_job_picture.jpg');
             data = {...jobInfo, company_logo: DefaultJobPictureFILE}
         }
+
         console.log(data)
-        axios
-            .put(`http://localhost:8000/api/jobs/${jobID}/`, data, {
-                headers: {
-                    Authorization: `Bearer ${getAccessToken()}`,
-                    "Content-Type": "multipart/form-data",
-                },
-            })
-            .then((res) => {
-                if (res.status == 200)
-                    setStatus({ type: "success", message: "Job created successfully" });
-                navigate(".", { replace: true });
-            })
-            .catch((err) => {
-                console.log(err.response.data);
-                const response_messages: string[] = createArrayFromStrings(
-                    err.response.data
-                );
-                setStatus({
-                    type: "error",
-                    message: "Ensure that these requirements are met:",
-                    messages: response_messages,
-                });
-            });
+
+        setStatus({ type: "success", message: "Job created successfully" });
+        navigate(".", { replace: true });
+
+        setStatus({
+            type: "error",
+            message: "Ensure that these requirements are met:",
+        });
       };
 
     return (

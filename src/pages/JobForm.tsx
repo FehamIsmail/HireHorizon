@@ -4,7 +4,6 @@ import {dict, IJob, JobType, StatusType, DefaultJobPic} from "../constants/types
 import * as utils from "../scripts/UserFormUtils";
 import {thinScrollBarStyle} from "../constants/styles";
 import {createArrayFromStrings, ErrorList, getAccessToken} from "../scripts/utils";
-import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {industryOptions} from "../constants/filter_constants";
 import {useRecoilValue} from "recoil";
@@ -142,30 +141,15 @@ export default function JobForm(){
             data = {...jobInfo, company_logo: DefaultJobPictureFILE}
         }
         console.log(data)
-        axios
-            .post("http://localhost:8000/api/jobs/", data, {
-                headers: {
-                    Authorization: `Bearer ${getAccessToken()}`,
-                    "Content-Type": "multipart/form-data",
-                },
-            })
-            .then((res) => {
-                if (res.status == 201)
-                    setStatus({ type: "success", message: "Job created successfully" });
-                setJobInfo(defaultJobInfo);
-                navigate(".", { replace: true });
-            })
-            .catch((err) => {
-                console.log(err.response.data);
-                const response_messages: string[] = createArrayFromStrings(
-                    err.response.data
-                );
-                setStatus({
-                    type: "error",
-                    message: "Ensure that these requirements are met:",
-                    messages: response_messages,
-                });
-            });
+
+        setJobInfo(defaultJobInfo);
+        navigate(".", { replace: true });
+
+        setStatus({
+            type: "error",
+            message: "Ensure that these requirements are met:",
+        });
+
       };
 
     return (

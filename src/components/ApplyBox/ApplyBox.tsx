@@ -3,7 +3,6 @@ import {useRecoilValue, useSetRecoilState} from "recoil";
 import {jobOnPreview, showApplyPopupState} from "../../constants/atoms";
 import {IJob} from "../../constants/types";
 import {Document} from "../../constants/types";
-import axios from "axios";
 import {getAccessToken} from "../../scripts/utils";
 import {convertToDocumentArray} from "../../scripts/DocumentUtils";
 import {Link} from "react-router-dom";
@@ -19,46 +18,10 @@ export const ApplyBox = () => {
             alert('No application package selected')
             return
         }
-        axios.post(`http://localhost:8000/api/jobs/${job?.id}/apply/`, {package_id: selectedAppID},{
-                headers: {
-                    Authorization: `Bearer ${getAccessToken()}`,
-                    'Content-Type': 'application/json',
-                },
-            }
-        ).then(res => {
-            console.log(res)
-            if(res.status === 201){
-                alert('Application successful')
-                window.location.reload()
-                setShowApplyPopup(false)
-            }
-
-        }).catch(err => {
-            console.log(err)
-            const response = err.response
-            if(response.status === 400){
-                if(response.data?.application) {
-                    console.log('here')
-                    alert(response.data?.application)
-                    setShowApplyPopup(false)
-                    return
-                }
-            }
-        })
     }
 
     useEffect(() => {
-        axios.get(`http://localhost:8000/api/application-package/`, {
-                headers: {
-                    Authorization: `Bearer ${getAccessToken()}`,
-                    "Content-Type": 'multipart/form-data'
-                },
-            }
-        ).then(res => {
-            setAppList(convertToDocumentArray(res.data, 'application-package'))
-        }).catch(err => {
-            console.log(err.response.data)
-        })
+        // setAppList(convertToDocumentArray(res.data, 'application-package'))
     }, [])
 
     useEffect(() => {

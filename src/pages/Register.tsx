@@ -55,7 +55,7 @@ export function Register() {
             user_data.company_name = organization
 
         if (password1===password2) {
-            window.location.href = '/login'
+            window.location.href = '#/login'
         } else {
             setError('Mismatched Password')
             setMessages(['Make sure the passwords are the same'])

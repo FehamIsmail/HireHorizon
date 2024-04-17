@@ -43,7 +43,7 @@ export function LogIn() {
     useEffect(() => {
         console.log(userType)
         if(userType === 'STUDENT') {
-          window.location.href = '/'
+          window.location.href = '#'
         }
     }, [userType]);
 

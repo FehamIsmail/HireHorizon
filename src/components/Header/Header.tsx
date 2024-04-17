@@ -28,14 +28,6 @@ const Header = () => {
             href: '/',
             icon: ClipboardDocumentIcon,
         },
-        ...(role === 'STUDENT' && isAuthenticated ? [
-                {   name: 'Job Applications',
-                    description: 'View your job applications',
-                    href: '/user/applications',
-                    icon: Square3Stack3DIcon,
-                }
-            ]
-        : []),
         ...(role === 'EMPLOYER' && isAuthenticated ? [
                 {
                     name: 'Employers / Post Job',
@@ -251,16 +243,6 @@ const Header = () => {
                                                 className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                             >
                                                 Your Profile
-                                            </Link>
-                                        )}
-                                    </Menu.Item>
-                                    <Menu.Item>
-                                        {({ active }) => (
-                                            <Link
-                                                to="/"
-                                                className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                                            >
-                                                Settings
                                             </Link>
                                         )}
                                     </Menu.Item>

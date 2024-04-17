@@ -45,8 +45,6 @@ const JobFilterSorting = () => {
                     <RadioButtonGroup placeholder="" options={radioOptions}/>
                     <p className="mt-1 text-base font-bold">Type of Work</p>
                     <FilteredComboBox placeholder="" options={workOptions}/>
-                    <p className="mt-2 text-base font-bold">Industries</p>
-                    <FilteredComboBox placeholder="" options={industryOptions}/>
                     <ToggleButton placeholder={"Remote"} options={[{id: 0, name: 'isRemote'}]}/>
                     <ToggleButton placeholder={"Favorite"} options={[{id: 0, name: 'isFavorite'}]}/>
                     {width <= 1060 && (

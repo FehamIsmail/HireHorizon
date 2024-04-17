@@ -19,6 +19,7 @@ export interface IJob {
     contact_phone: string | null;
     website_url: string | null;
     company_logo: string | null;
+    match?: number;
 }
 
 export enum JobType {

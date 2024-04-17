@@ -102,14 +102,11 @@ export default function DocumentTable(props:DocumentTableProps) {
                                 <th scope="col" className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">
                                     Type
                                 </th>
-                                <th scope="col" className="py-3.5 px-3 text-center text-sm font-semibold text-gray-900">
-                                    Actions
-                                </th>
                             </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200">
-                            {documentList.map((document) => (
-                                <tr key={document.id}>
+                            {documentList.map((document, index) => (
+                                <tr key={index}>
                                     <td className="whitespace-nowrap py-4 flex justify-center text-sm font-medium mx-auto text-gray-900 sm:pl-0">
                                         <input
                                             type="radio"
@@ -123,25 +120,11 @@ export default function DocumentTable(props:DocumentTableProps) {
                                                                title={document.file?.split('/').pop()}>
                                         {shortenFileName(document.file?.split('/').pop(), 50)}</td>}
                                     {type === 'APP_PKG' && <>
-                                    <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500" title={document.file?.curriculum_vitae?.split('/').pop()}
-                                        >{shortenFileName(document.file.curriculum_vitae?.split('/').pop())}</td>
-                                    <td className={`whitespace-nowrap py-4 px-3 text-sm text-gray-500 ${document.cover_letter?.cover_letter ? '' : 'font-[400] text-red-900'}`} title={document.cover_letter?.cover_letter?.split('/').pop()}
-                                        >{shortenFileName(document.cover_letter?.cover_letter?.split('/').pop() || 'No Cover Letter')}</td></>}
+                                    <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500" title={document.cv}
+                                        >{shortenFileName(document.cv)}</td>
+                                    <td className={`whitespace-nowrap py-4 px-3 text-sm text-gray-500 ${document.cover_letter ? '' : 'font-[400] text-red-900'}`} title={document.cover_letter?.cover_letter?.split('/').pop()}
+                                        >{shortenFileName(document.cover_letter || 'No Cover Letter')}</td></>}
                                     <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">{document.type}</td>
-                                    <td className="relative whitespace-nowrap p-4 text-center text-sm font-medium flex items-center justify-center gap-2 ">
-                                        {type != 'APP_PKG' &&
-                                        <button onClick={() => downloadDocument(document.file, document.file?.split('/').pop())}>
-                                            <ArrowDownTrayIcon className="h-4 w-4 text-indigo-600 hover:text-indigo-900"/>
-                                        </button>}
-                                        <button
-                                            className="text-indigo-600 hover:text-indigo-900"
-                                            onClick={() => editDocument(document)}>
-                                            Edit
-                                        </button>
-                                        <button onClick={() => deleteDocument(document)}>
-                                            <XMarkIcon className="h-4 w-4 text-red-600 hover:text-red-900"/>
-                                        </button>
-                                    </td>
                                 </tr>
                             ))}
                             </tbody>
@@ -153,7 +136,7 @@ export default function DocumentTable(props:DocumentTableProps) {
                 <button
                     type="submit"
                     onClick={handleSave}
-                    className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary_dark focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="invisible justify-center rounded-md border border-transparent  py-2 px-4 text-sm font-medium text-white cursor-default"
                 >
                     Save
                 </button>

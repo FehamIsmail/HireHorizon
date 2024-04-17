@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { IJob, DefaultJobPic } from "../../constants/types";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import {useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
-import {favoriteJobsAtom, jobOnPreviewIDAtom} from "../../constants/atoms";
+import {authAtom, favoriteJobsAtom, jobOnPreviewIDAtom} from "../../constants/atoms";
 import JobDescription from "../JobDescription/JobDescription";
 import JobLabel from "./JobLabel";
 import { getAccessToken, useWindowDimensions } from "../../scripts/utils";
@@ -22,9 +22,23 @@ const JobItem = (props: JobItemProps) => {
   const [isFavourite, setIsFavourite] = useState<boolean>(false);
   const [favoriteJobs, setFavoriteJobs] = useRecoilState(favoriteJobsAtom)
   const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false);
+  const { isAuthenticated } = useRecoilValue(authAtom);
   const jobItemRef = useRef<HTMLDivElement>(null);
   const { width } = useWindowDimensions();
   const navigate = useNavigate();
+
+  const getMatchColor = (match: number) => {
+    // return hexcolor based on match percentage return a darker and lighter shade of the same color
+    if (match < 25) {
+      return ['#FF4D4F', '#ffbab8'];
+    } else if (match < 50) {
+      return ['#c95a2d', '#ffc7ab'];
+    } else if (match < 75) {
+      return ['#e19b12', '#ffebbd'];
+    } else {
+      return ['#3c9a10', '#d8ffc1'];
+    }
+  }
 
   useEffect(() => {
     localStorage.setItem('favs', JSON.stringify(favoriteJobs));
@@ -134,9 +148,19 @@ const JobItem = (props: JobItemProps) => {
                 {job.street_address}
               </div>
             </div>
-            <div className="hidden text-[#6D28D9] text-xs ml-auto ">New</div>
-            <div className="text-[#A1A1AA] text-xs ml-auto whitespace-nowrap ">
-              1 d
+            { isAuthenticated && <div className=" text-xs px-2 py-1 whitespace-nowrap rounded-md" style={{
+                color: getMatchColor(job.match || 0)[0],
+                backgroundColor: getMatchColor(job.match || 0)[1]
+              }}
+            >
+            {job.match} % Match</div>}
+            <div className={`text-xs px-2 py-1 rounded-md ml-auto whitespace-nowrap`}
+              style={{
+                color: job.id < 4 ? '#2563EB' : '#A1A1AA',
+                backgroundColor: job.id < 4 ? '#E5EDFF' : '#F4F4F5'
+              }}
+            >
+              {job.id < 4 ? "New" : "1 d"}
             </div>
           </div>
           <div className="job-title overflow-ellipsis overflow-hidden mt-2 text-lg font-bold">

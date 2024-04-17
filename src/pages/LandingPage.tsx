@@ -9,6 +9,7 @@ import {useRecoilValue, useSetRecoilState} from "recoil";
 import {authAtom, filteredJobListSelector, jobListAtom, showApplyPopupState} from "../constants/atoms";
 import {getAccessToken} from "../scripts/utils";
 import {ApplyBox} from "../components/ApplyBox/ApplyBox";
+import {mockJobs} from "../constants/mockJobs";
 
 export const LandingPage = () => {
     const jobListSetter = useSetRecoilState(jobListAtom)
@@ -17,11 +18,7 @@ export const LandingPage = () => {
     const showApplyPopup = useRecoilValue(showApplyPopupState)
 
     useEffect(() => {
-        const headers:any = { 'Content-Type': 'application/json' };
-
-        if (isAuthenticated)
-            headers.Authorization = `Bearer ${getAccessToken()}`;
-
+        jobListSetter(mockJobs)
     }, [])
 
     return (

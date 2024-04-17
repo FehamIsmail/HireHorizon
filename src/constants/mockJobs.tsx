@@ -27,7 +27,8 @@ export const mockJobs: IJob[] = [
         contact_email: "jobs@example.com",
         contact_phone: null,
         website_url: "https://example.com/jobs",
-        company_logo: "https://example.com/logo.png",
+        company_logo: "https://greenjobs.nl/_nuxt/img/default-organisation.b55e6ea.png",
+        match: 90,
     },
     {
         id: 2,
@@ -43,7 +44,8 @@ export const mockJobs: IJob[] = [
         contact_email: "jobs@example.com",
         contact_phone: null,
         website_url: "https://example.com/jobs",
-        company_logo: "https://example.com/logo.png",
+        company_logo: "https://greenjobs.nl/_nuxt/img/default-organisation.b55e6ea.png",
+        match: 80,
     },
     {
         id: 3,
@@ -59,7 +61,8 @@ export const mockJobs: IJob[] = [
         contact_email: "jobs@example.com",
         contact_phone: null,
         website_url: "https://example.com/jobs",
-        company_logo: "https://example.com/logo.png",
+        company_logo: "https://greenjobs.nl/_nuxt/img/default-organisation.b55e6ea.png",
+        match: 70,
     },
     {
         id: 4,
@@ -75,7 +78,8 @@ export const mockJobs: IJob[] = [
         contact_email: "jobs@example.com",
         contact_phone: null,
         website_url: "https://example.com/jobs",
-        company_logo: "https://example.com/logo.png",
+        company_logo: "https://greenjobs.nl/_nuxt/img/default-organisation.b55e6ea.png",
+        match: 60,
     },
     {
         id: 5,
@@ -91,7 +95,8 @@ export const mockJobs: IJob[] = [
         contact_email: "jobs@example.com",
         contact_phone: null,
         website_url: "https://example.com/jobs",
-        company_logo: "https://example.com/logo.png",
+        company_logo: "https://greenjobs.nl/_nuxt/img/default-organisation.b55e6ea.png",
+        match: 50,
     },
     {
         id: 6,
@@ -107,7 +112,8 @@ export const mockJobs: IJob[] = [
         contact_email: "jobs@example.com",
         contact_phone: null,
         website_url: "https://example.com/jobs",
-        company_logo: "https://example.com/logo.png",
+        company_logo: "https://greenjobs.nl/_nuxt/img/default-organisation.b55e6ea.png",
+        match: 40,
     },
     {
         id: 7,
@@ -123,7 +129,8 @@ export const mockJobs: IJob[] = [
         contact_email: "jobs@example.com",
         contact_phone: null,
         website_url: "https://example.com/jobs",
-        company_logo: "https://example.com/logo.png",
+        company_logo: "https://greenjobs.nl/_nuxt/img/default-organisation.b55e6ea.png",
+        match: 30,
     },
     {
         id: 8,
@@ -139,7 +146,8 @@ export const mockJobs: IJob[] = [
         contact_email: "jobs@example.com",
         contact_phone: null,
         website_url: "https://example.com/jobs",
-        company_logo: "https://example.com/logo.png",
+        company_logo: "https://greenjobs.nl/_nuxt/img/default-organisation.b55e6ea.png",
+        match: 20,
     },
     {
         id: 9,
@@ -155,7 +163,8 @@ export const mockJobs: IJob[] = [
         contact_email: "jobs@example.com",
         contact_phone: null,
         website_url: "https://example.com/jobs",
-        company_logo: "https://example.com/logo.png",
+        company_logo: "https://greenjobs.nl/_nuxt/img/default-organisation.b55e6ea.png",
+        match: 10,
     },
     {
         id: 10,
@@ -171,7 +180,8 @@ export const mockJobs: IJob[] = [
         contact_email: "jobs@example.com",
         contact_phone: null,
         website_url: "https://example.com/jobs",
-        company_logo: "https://example.com/logo.png",
+        company_logo: "https://greenjobs.nl/_nuxt/img/default-organisation.b55e6ea.png",
+        match: 0,
     },
 ]
 

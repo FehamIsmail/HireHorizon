@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {IJob, DefaultJobPic} from "../../constants/types";
 import {useRecoilValue, useSetRecoilState} from "recoil";
-import {jobOnPreview, jobOnPreviewIDAtom, showApplyPopupState, userTypeAtom} from "../../constants/atoms";
+import {authAtom, jobOnPreview, jobOnPreviewIDAtom, showApplyPopupState, userTypeAtom} from "../../constants/atoms";
 import {getJobTypesString, simplifyURL, useWindowDimensions} from "../../scripts/utils";
 import {thinScrollBarStyle} from "../../constants/styles";
 
@@ -24,6 +24,20 @@ const JobDescription = (props: JobDescriptionProps) => {
     const [fade, setFade] = useState<boolean>(false);
     const fadeStyle = `${fade ? 'opacity-50' : 'opacity-1 transition-opacity duration-200 ease-linear'}`
     const user = useRecoilValue(userTypeAtom)
+    const {isAuthenticated} = useRecoilValue(authAtom)
+
+    const getMatchColor = (match: number) => {
+        // return hexcolor based on match percentage
+        if (match < 25) {
+            return '#FF4D4F'
+        } else if (match < 50) {
+            return '#c25128'
+        } else if (match < 75) {
+            return '#d79311'
+        } else {
+            return '#51b41c'
+        }
+    }
 
     useEffect(() => {
         if (job) {
@@ -66,6 +80,12 @@ const JobDescription = (props: JobDescriptionProps) => {
                                 <div className="job-title overflow-ellipsis overflow-hidden text-lg font-bold">
                                     {jobOnFocus.title}
                                 </div>
+                                {isAuthenticated &&
+                                    <div className="ml-auto job-company-name text-[#3F3F46] text-sm font-bold"
+                                         style={{color: getMatchColor(jobOnFocus.match || 0)}}
+                                >
+                                    {jobOnFocus.match} % Match
+                                </div>}
                             </div>
                         </div>
                         <div className={`flex flex-col gap-[2px] text-top h-fit ${width < 1060 ? '' : 'mt-2'} `}>

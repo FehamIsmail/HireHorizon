@@ -115,19 +115,19 @@ export const DocumentForm = (props:DocumentProps) => {
                     </div>
                     {documentInfo.type == 'APP_PKG' &&
                         <div className="col-span-6">
-                            <label htmlFor="file" className="block text-sm font-medium text-gray-700">
+                            <label htmlFor="cv" className="block text-sm font-medium text-gray-700">
                                 Choose a CV
                             </label>
                         <select
-                            name="file"
-                            id="file"
+                            name="cv"
+                            id="cv"
                             onChange={e => utils.handleDocumentSelectChange(e, setDocumentInfo)}
-                            value={documentInfo.file || ''}
+                            value={documentInfo.cv || ''}
                             className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                         >
                             <option value="">-- Select --</option>
-                            {resumeList.map((item) => (
-                                <option key={item.id} value={item.id}>
+                            {resumeList.map((item, index) => (
+                                <option key={index} value={item.title}>
                                     {`${item.file?.split('/').pop()} (${item.title})`}
                                 </option>
                             ))}
@@ -136,19 +136,19 @@ export const DocumentForm = (props:DocumentProps) => {
                     {documentInfo.type == 'APP_PKG' &&
                         <div className={`col-span-6`}>
                             <div className={`${!hasCoverLetter ? '' : 'hidden'}`}>
-                                <label htmlFor="file2" className="block text-sm font-medium text-gray-700">
+                                <label htmlFor="cover_letter" className="block text-sm font-medium text-gray-700">
                                     Choose a Cover Letter
                                 </label>
                                 <select
-                                    name="file2"
-                                    id="file2"
+                                    name="cover_letter"
+                                    id="cover_letter"
                                     onChange={e => utils.handleDocumentSelectChange(e, setDocumentInfo)}
-                                    value={documentInfo.cv || ''}
+                                    value={documentInfo.cover_letter || ''}
                                     className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                 >
                                     <option value="">-- Select --</option>
-                                    {letterList.map((item) => (
-                                        <option key={item.id} value={item.id}>
+                                    {letterList.map((item, index) => (
+                                        <option key={index} value={item.title}>
                                             {`${item.file?.split('/').pop()} (${item.title})`}
                                         </option>
                                     ))}

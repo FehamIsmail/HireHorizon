@@ -21,7 +21,13 @@ export const ApplyBox = () => {
     }
 
     useEffect(() => {
-        // setAppList(convertToDocumentArray(res.data, 'application-package'))
+        const appList = localStorage.getItem('documents')
+        // Parse and filter by document type
+        if (appList) {
+            const parsedAppList = JSON.parse(appList)
+            const filteredAppList = (parsedAppList).filter((doc: Document) => doc.type === 'APP_PKG')
+            setAppList(filteredAppList)
+        }
     }, [])
 
     useEffect(() => {
@@ -30,7 +36,7 @@ export const ApplyBox = () => {
     }, [selectedAppID])
 
     const getApplicationObject: () => Document | undefined = () => {
-        return appList.find((app) => app.id === selectedAppID);
+        return appList.find((app) => app.title === selectedAppID);
     }
 
 
@@ -46,12 +52,12 @@ export const ApplyBox = () => {
                         name="file"
                         id="file"
                         onChange={e => setSelectedAppID(e.target.value)}
-                        value={getApplicationObject()?.id || ''}
+                        value={getApplicationObject()?.title || ''}
                         className="block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                     >
-                        <option value="">-- Select --</option>
-                        {appList.map((item) => (
-                            <option key={item.id} value={item.id}>
+                        <option value="" disabled={true} hidden={true}>-- Select --</option>
+                        {appList.map((item, idx) => (
+                            <option key={idx} value={item.title}>
                                 {`${item.title} ${item.default ? '(default)' : ''}`}
                             </option>
                         ))}

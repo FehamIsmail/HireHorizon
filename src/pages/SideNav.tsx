@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import {Link, Outlet, useLocation, useNavigate} from "react-router-dom";
 import { classNames } from "../scripts/utils";
 import {
   BellIcon,
@@ -21,7 +21,7 @@ export function SideNav() {
   const [accountNavigation, setAccountNavigation] = useState([
     {
       name: "Profile",
-      href: "/user/profile",
+      href: "#/user/profile",
       icon: UserCircleIcon,
       current: false,
     },
@@ -29,13 +29,12 @@ export function SideNav() {
       ? [
           {
             name: "Documents",
-            href: "/user/documents",
+            href: "#/user/documents",
             icon: ClipboardDocumentListIcon,
             current: false,
           },
         ]
       : []),
-    { name: "Notifications", href: "#", icon: BellIcon, current: false },
   ]);
 
   const [jobNavigation, setJobNavigation] = useState([
@@ -43,13 +42,13 @@ export function SideNav() {
       ? [
           {
             name: "Create Job",
-            href: "/job/create",
+            href: "#/job/create",
             icon: BriefcaseIcon,
             current: false,
           },
           {
             name: "View Jobs",
-            href: "/job/Jobselect",
+            href: "#/job/Jobselect",
             icon: UserCircleIcon,
             current: false,
           },
@@ -65,7 +64,7 @@ export function SideNav() {
       ? [
           {
             name: "Applications",
-            href: "/user/applications",
+            href: "#/user/applications",
             icon: Square3Stack3DIcon,
             current: false,
           },
@@ -79,26 +78,21 @@ export function SideNav() {
   }, []);
 
   const updateCurrentNav = () => {
-    const stringPath = location.pathname.split("/");
-    const navType = stringPath[stringPath.length - 2];
-    const currentSegment = location.pathname.split("/").pop();
-    let navToUpdate;
-    if (navType === "user") navToUpdate = accountNavigation;
-    if (navType === "job") navToUpdate = jobNavigation;
-    if (!navToUpdate || !currentSegment) return;
-    const updatedNavigation = navToUpdate.map((item) => {
-      return {
-        ...item,
-        current: item.href.endsWith(currentSegment),
-      };
-    });
-    navToUpdate = navToUpdate.splice(
-      0,
-      navToUpdate.length,
-      ...updatedNavigation
+    // get last part of url
+    const url = location.pathname.split("/").pop();
+    // loop over accountNavigation and jobNavigation and set current to true if url matches
+    setAccountNavigation(
+      accountNavigation.map((nav) => ({
+        ...nav,
+        current: nav.href.split("/").pop() === url,
+      }))
     );
-    if (navType === "user") setAccountNavigation(navToUpdate);
-    if (navType === "job") setJobNavigation(navToUpdate);
+    setJobNavigation(
+      jobNavigation.map((nav) => ({
+        ...nav,
+        current: nav.href.split("/").pop() === url,
+      }))
+    );
   };
 
   useEffect(() => {
@@ -134,33 +128,6 @@ export function SideNav() {
                   aria-hidden="true"
                 />
                 <span className="text-gray-800 truncate">{item.name}</span>
-              </a>
-            ))}
-          </nav>
-          <div className="text-center py-2 pr-4">Jobs</div>
-          <nav className="space-y-1 p-3">
-            {jobNavigation.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className={classNames(
-                  item.current
-                    ? "bg-gray-50 text-indigo-700 hover:bg-white hover:text-indigo-700"
-                    : "text-gray-900 hover:bg-gray-100 hover:text-gray-900",
-                  "group flex items-center rounded-md px-3 py-2 text-sm font-medium"
-                )}
-                aria-current={item.current ? "page" : undefined}
-              >
-                <item.icon
-                  className={classNames(
-                    item.current
-                      ? "text-indigo-500 group-hover:text-indigo-500"
-                      : "text-gray-800 group-hover:text-gray-500",
-                    "-ml-1 mr-3 h-6 w-6 flex-shrink-0"
-                  )}
-                  aria-hidden="true"
-                />
-                <span className="truncate">{item.name}</span>
               </a>
             ))}
           </nav>

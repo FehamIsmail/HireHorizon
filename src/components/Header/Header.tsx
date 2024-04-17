@@ -71,7 +71,7 @@ const Header = () => {
                 <div className="flex items-center justify-between border-gray-100 py-3 md:justify-start md:space-x-10">
                     <div className="flex justify-start md:w-0 md:flex-1">
                         <Link to="/" className="flex cursor-pointer px-2.5 py-3 rounded-lg bg-indigo-600">
-                            <span className="sr-only">CareerConnect</span>
+                            <span className="sr-only">HireHorizon</span>
                             <img color="black"
                                 className="h-4 w-auto sm:h-5 svg-white"
                                 src={logo}

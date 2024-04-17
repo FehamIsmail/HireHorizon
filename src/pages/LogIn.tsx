@@ -5,11 +5,6 @@ import axios from "axios";
 import {setAccessToken, setAuthenticated, setRefreshToken} from "../scripts/utils";
 import {useSetRecoilState} from "recoil";
 import {authAtom, userTypeAtom} from "../constants/atoms";
-import { useGoogleLogin } from '@react-oauth/google';
-// @ts-ignore
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
-// @ts-ignore
-import GitHubLogin from 'react-github-login';
 
 
 
@@ -21,13 +16,7 @@ export function LogIn() {
     const setUserType = useSetRecoilState(userTypeAtom);
     const navigate = useNavigate();
 
-    const googleLogin = useGoogleLogin({
-        onSuccess: tokenResponse => loginWithGoogle(tokenResponse),
-    });
 
-    const responseFacebook = (response: any) => {
-        loginWithFacebook(response);
-    }
 
 
     const onSuccessGithub = (response: any) => {
@@ -253,58 +242,12 @@ export function LogIn() {
                                 </div>
                             </div>
                             <div className="mt-6 grid grid-cols-3 gap-3">
-                                <div style={{cursor:"pointer"}}>
-                                    <div
-                                        onClick={() => googleLogin()}
-                                        className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
-                                    >
-                                        <span className="sr-only">Sign in with Google</span>
-                                        <img
-                                            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-                                            alt="Google logo"
-                                            className="h-5 w-5"
-                                        />
+                                    <div style={{cursor:"pointer"}}>
                                     </div>
                                 </div>
                                 <div>
-                                    <FacebookLogin
-                                      appId="1628327201021031"
-                                      callback={responseFacebook}
-                                      render={(renderProps: any) => (
-                                            <div
-                                                onClick={renderProps.onClick}
-                                                className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
-                                            >
-                                                <span className="sr-only">Sign in with Facebook</span>
-                                                <img
-                                                    src="https://upload.wikimedia.org/wikipedia/commons/9/91/036-facebook.png"
-                                                    alt="Facebook logo"
-                                                    className="h-5 w-5"
-                                                />
-                                            </div>
-                                      )}
-                                    />
                                 </div>
                                 <div>
-                                    <GitHubLogin
-                                        clientId="13dc470a1b66e85f483e"
-                                        redirectUri=""
-                                        onSuccess={onSuccessGithub}
-                                        onFailure={onFailureGithub}
-                                        className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
-                                        buttonText={
-                                            (
-                                                <div>
-                                                    <span className="sr-only">Sign in with GitHub</span>
-                                                    <img
-                                                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/640px-Octicons-mark-github.svg.png"
-                                                    alt="GitHub logo"
-                                                    className="h-5 w-5"
-                                                />
-                                                </div>
-                                            )
-                                        }
-                                    />
                                 </div>
                             </div>
                             <div className="space-y-4 mt-4 text-sm text-gray-900 sm:flex sm:items-center sm:justify-center sm:space-y-0 sm:space-x-4">
@@ -325,7 +268,6 @@ export function LogIn() {
                         </div>
                     </div>
                 </div>
-            </div>
         </>
     );
 }

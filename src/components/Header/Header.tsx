@@ -15,7 +15,6 @@ import logo from '../../assets/logo_nobg.svg'
 import {Link} from "react-router-dom";
 import {useRecoilValue} from "recoil";
 import {authAtom, userTypeAtom} from "../../constants/atoms";
-import axios from "axios";
 
 const Header = () => {
     const { isAuthenticated } = useRecoilValue(authAtom);
@@ -68,18 +67,6 @@ const Header = () => {
     ]
 
     const getUserInfo = () => {
-        axios.get('http://localhost:8000/api/profile/', {
-            headers: {
-                Authorization: `Bearer ${getAccessToken()}`,
-            },
-        })
-            .then((response: any) => {
-                if(response.data.profile.profile_picture)
-                    setProfile_picture('http://localhost:8000'+response.data.profile.profile_picture)
-            })
-            .catch(error => {
-                console.error(error);
-            });
     }
 
     useEffect(() => {

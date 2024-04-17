@@ -1,10 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {Document, StatusType} from "../../constants/types";
 import {ArrowDownTrayIcon, XMarkIcon} from "@heroicons/react/24/outline";
-import axios from "axios";
-import {createArrayFromStrings, getAccessToken, shortenFileName} from "../../scripts/utils";
-import {getEndpoint} from "../../scripts/DocumentUtils";
-
+import {shortenFileName} from "../../scripts/utils";
 
 export interface DocumentTableProps {
     documentList: Document[] | any[]
@@ -38,38 +35,17 @@ export default function DocumentTable(props:DocumentTableProps) {
     };
 
     const deleteDocument = (doc: Document) => {
-        const endpoint = getEndpoint(doc.type)
         const id = doc.id;
-        axios.delete(`http://localhost:8000${endpoint}${id}/`, {
-                headers: {
-                    Authorization: `Bearer ${getAccessToken()}`,
-                },
-            }
-        ).then(res => {
-            console.log(res)
-            if(res.status === 204){
-                setStatus({type: 'success', message: 'Document deleted'})
-                window.location.reload()
-            }
 
-        }).catch(err => {
-            console.log(err.response.data)
-            const response_messages: string[] = createArrayFromStrings(err.response.data)
-            setStatus({type:'error', message:'Ensure that these requirements are met:', messages: response_messages})
-        })
+        setStatus({type: 'success', message: 'Document deleted'})
+        window.location.reload()
+
+        setStatus({type:'error', message:'Ensure that these requirements are met:', messages: ['unknown error']})
+
     }
 
     const downloadDocument = async (url: string, fileName: string) => {
-        const response = await fetch(url);
-        const blob = await response.blob();
-        const blobUrl = window.URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = blobUrl;
-        link.setAttribute("download", fileName);
-        document.body.appendChild(link);
-        link.click();
-        link.parentNode?.removeChild(link);
-        window.URL.revokeObjectURL(blobUrl);
+          // Download the file
     }
 
     const handleSave = () => {
@@ -77,19 +53,9 @@ export default function DocumentTable(props:DocumentTableProps) {
             return
         const data = {default: true}
         const id = defaultDocument.id
-        const endpoint = getEndpoint(defaultDocument.type)
-        axios.put(`http://localhost:8000${endpoint}${id}/`, data, {
-                headers: {
-                    Authorization: `Bearer ${getAccessToken()}`,
-                },
-            }
-        ).then(res => {
-            if (res.status == 200)
-                window.location.reload()
-        }).catch(err => {
-            console.log(err.response.data)
-        })
 
+        window.location.reload()
+        console.log('error')
     }
 
     useEffect(() => {
@@ -120,10 +86,10 @@ export default function DocumentTable(props:DocumentTableProps) {
                                 </th>
                                 {type == 'APP_PKG' ?
                                     <>
-                                        <th scope="col" className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">
+                                        <th scope="col" key="1" className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">
                                             Resume
                                         </th>
-                                        <th scope="col" className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">
+                                        <th scope="col" key="2" className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">
                                             Cover Letter
                                         </th>
                                     </>
@@ -159,8 +125,8 @@ export default function DocumentTable(props:DocumentTableProps) {
                                     {type === 'APP_PKG' && <>
                                     <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500" title={document.file?.curriculum_vitae?.split('/').pop()}
                                         >{shortenFileName(document.file.curriculum_vitae?.split('/').pop())}</td>
-                                    <td className={`whitespace-nowrap py-4 px-3 text-sm text-gray-500 ${document.file2?.cover_letter ? '' : 'font-[400] text-red-900'}`} title={document.file2?.cover_letter?.split('/').pop()}
-                                        >{shortenFileName(document.file2?.cover_letter?.split('/').pop() || 'No Cover Letter')}</td></>}
+                                    <td className={`whitespace-nowrap py-4 px-3 text-sm text-gray-500 ${document.cover_letter?.cover_letter ? '' : 'font-[400] text-red-900'}`} title={document.cover_letter?.cover_letter?.split('/').pop()}
+                                        >{shortenFileName(document.cover_letter?.cover_letter?.split('/').pop() || 'No Cover Letter')}</td></>}
                                     <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">{document.type}</td>
                                     <td className="relative whitespace-nowrap p-4 text-center text-sm font-medium flex items-center justify-center gap-2 ">
                                         {type != 'APP_PKG' &&

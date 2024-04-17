@@ -11,8 +11,6 @@ export function ToggleButton(props: FilterProps) {
     const filter = useRecoilValue(filterSortingAtom)
 
     const handleFilterChange = (value: boolean) => {
-
-        console.log(value)
         setFilterSorting((prevFilterSorting) => ({
             ...prevFilterSorting,
             [options[0]?.name]: value,
@@ -20,7 +18,6 @@ export function ToggleButton(props: FilterProps) {
     };
 
     useEffect(() => {
-        console.log(filter)
         handleFilterChange(enabled)
     }, [enabled]);
 

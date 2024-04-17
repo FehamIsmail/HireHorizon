@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import logo from "../assets/logo_nobg.svg";
 import {Link, useNavigate} from "react-router-dom";
-import axios from "axios";
 
 enum ErrorType {
     PASSWORD = "Please review your password",
@@ -56,35 +55,7 @@ export function Register() {
             user_data.company_name = organization
 
         if (password1===password2) {
-            axios.post('http://localhost:8000/api/register/', user_data)
-            .then(res => {
-                console.log(res)
-                navigate('/login');
-                setShowAlert(true)
-            }).catch(err => {
-                const res = err.response.data
-                let messages:string[] = [];
-                if(res.email && res.password){
-                    messages = messages.concat(res.email)
-                    messages = messages.concat(res.password)
-                    setError(ErrorType.BOTH)
-                }
-                else if(res.email){
-                    messages = messages.concat(res.email)
-                    setError(ErrorType.EMAIL)
-                }
-                else if(res.password){
-                    messages = messages.concat(res.password)
-                    setError(ErrorType.PASSWORD)
-                }
-                else{
-                    messages = messages.concat(err.statusText)
-                    setError(ErrorType.UNKNOWN)
-                }
-                console.log(messages)
-                setMessages(messages);
-                setShowAlert(true);
-            })
+            window.location.href = '/login'
         } else {
             setError('Mismatched Password')
             setMessages(['Make sure the passwords are the same'])

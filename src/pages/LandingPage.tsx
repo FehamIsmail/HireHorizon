@@ -7,7 +7,6 @@ import JobDescription from "../components/JobDescription/JobDescription";
 import React, {useEffect} from "react";
 import {useRecoilValue, useSetRecoilState} from "recoil";
 import {authAtom, filteredJobListSelector, jobListAtom, showApplyPopupState} from "../constants/atoms";
-import axios from "axios";
 import {getAccessToken} from "../scripts/utils";
 import {JobType} from "../constants/types";
 import {ApplyBox} from "../components/ApplyBox/ApplyBox";
@@ -23,26 +22,6 @@ export const LandingPage = () => {
 
         if (isAuthenticated)
             headers.Authorization = `Bearer ${getAccessToken()}`;
-        axios({
-                method: 'get',
-                url: 'http://localhost:8000/api/jobs/',
-                params: {
-                    self_only: false
-                },
-                headers
-            }
-        ).then(res => {
-            const updatedJobs = res.data.map((job:any) => {
-                return {
-                    ...job,
-                    types: job.types?.split(',').map((type:string) => JobType[type.trim() as keyof typeof JobType]),
-                    company: job.employer_profile.company
-                };
-            });
-            jobListSetter(() => updatedJobs)
-        }).catch(err => {
-            console.log(err)
-        })
 
     }, [])
 

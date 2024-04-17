@@ -105,7 +105,7 @@ export function convertToDocumentArray(data: any[], type:'curriculumvitae' | 'co
             document = {
                 id: item.id,
                 file: item.curriculum_vitae,
-                file2: item.cover_letter,
+                cover_letter: item.cover_letter,
                 title: item.title,
                 default: item.default,
                 type: getTypeFromName(type),
@@ -123,7 +123,7 @@ export function feedApplicationCVandCL(cvs: Document[], cls: Document[], apps: D
     // console.log(apps.length)
     apps.forEach((app, index) => {
         // console.log(getNameFromId(cvs, app.file || ''))
-        new_apps.push({...apps[index], curriculum_vitae: getNameFromId(cvs, app.file||''), cover_letter:getNameFromId(cls, app.file2||'')})
+        new_apps.push({...apps[index], curriculum_vitae: getNameFromId(cvs, app.file||''), cover_letter:getNameFromId(cls, app.cover_letter||'')})
     })
     // console.log(new_apps)
     return new_apps

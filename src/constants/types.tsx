@@ -163,7 +163,8 @@ export type CandidateType = {
 export type Document = {
     id: string
     file?: string,
-    file2?: string
+    cv?: string,
+    cover_letter?: string,
     title: string,
     default: boolean
     type: 'CV' | 'LETTER' | 'APP_PKG' | ''

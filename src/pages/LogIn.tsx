@@ -1,9 +1,8 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import logo from "../assets/logo_nobg.svg";
 import {Link, useNavigate} from "react-router-dom";
-import axios from "axios";
 import {setAccessToken, setAuthenticated, setRefreshToken} from "../scripts/utils";
-import {useSetRecoilState} from "recoil";
+import {useRecoilValue, useSetRecoilState} from "recoil";
 import {authAtom, userTypeAtom} from "../constants/atoms";
 
 
@@ -14,25 +13,11 @@ export function LogIn() {
     const [showAlert, setShowAlert] = useState<boolean>(false)
     const setAuth = useSetRecoilState(authAtom);
     const setUserType = useSetRecoilState(userTypeAtom);
+    const userType = useRecoilValue(userTypeAtom);
     const navigate = useNavigate();
 
 
 
-
-    const onSuccessGithub = (response: any) => {
-        console.log("SUCCESS")
-        // console.log(response);
-        const code = response.code
-        axios.get('http://localhost:8000/api/github_oauth/', {params: {code}})
-            .then(r =>{
-                console.log("YOUR ACCESS TOKEN:" + r.data.access_token)
-                loginWithGithub(r.data.access_token)
-            });
-    }
-    const onFailureGithub = (response: any) => {
-        console.log("FAIL")
-        console.log(response);
-    }
 
     const defaultLogin = (e: any) => {
         e.preventDefault();
@@ -42,83 +27,25 @@ export function LogIn() {
             grant_type: 'password',
             username: email,
             password: password,
-            client_id: process.env.REACT_APP_CLIENT_ID,
-            client_secret: process.env.REACT_APP_CLIENT_SECRET,
         }
         requestLogin(data, 'auth/token')
     }
 
-    const loginWithGoogle = (response: any) => {
-        const data = {
-            token: response.access_token,
-            backend: 'google-oauth2',
-            grant_type: 'convert_token',
-            client_id: process.env.REACT_APP_CLIENT_ID,
-            client_secret: process.env.REACT_APP_CLIENT_SECRET,
-        }
-        console.log(data)
-        requestLogin(data, 'auth/convert-token')
-    };
-
-    const loginWithFacebook = (response: any) => {
-        const data = {
-            token: response.accessToken,
-            backend: 'facebook',
-            grant_type: 'convert_token',
-            client_id: process.env.REACT_APP_CLIENT_ID,
-            client_secret: process.env.REACT_APP_CLIENT_SECRET,
-        }
-        console.log(data)
-        requestLogin(data, 'auth/convert-token')
-    };
-
-    const loginWithGithub = (response: any) => {
-        console.log(response)
-        const data = {
-            token: response,
-            backend: 'github',
-            grant_type: 'convert_token',
-            client_id: process.env.REACT_APP_CLIENT_ID,
-            client_secret: process.env.REACT_APP_CLIENT_SECRET,
-        }
-        console.log(data)
-        requestLogin(data, 'auth/convert-token')
-    };
 
     function requestLogin(data:any, endpoint:string){
-        axios.post(`http://localhost:8000/${endpoint}`, data)
-            .then(res => {
-                if (res.status == 200) {
-                    console.log(res)
-                    setAccessToken(res.data.access_token)
-                    setRefreshToken(res.data.refresh_token)
-                    setAuth({ isAuthenticated: true });
-                    setAuthenticated(true)
-                    // Fetch user profile after successful login
-                    return axios.get('http://localhost:8000/api/profile/', {
-                        headers: {
-                            Authorization: `Bearer ${res.data.access_token}`,
-                        },
-                    });
-                }
-            })
-            .then((response: any) => {
-                console.log(response)
-                const role = response.data.user.role
-                setUserType(role)
-                if (role === "STUDENT")
-                    localStorage.setItem('role', 'STUDENT')
-                if (role === "EMPLOYER")
-                    localStorage.setItem('role', 'EMPLOYER')
-                navigate('/');
-            })
-            .catch(err => {
-                console.log(err)
-                setError('Invalid Credentials')
-                setMessage('Make sure the email and password are valid')
-                setShowAlert(true)
-            });
+        setAuth({ isAuthenticated: true });
+        setAuthenticated(true)
+        setUserType('STUDENT')
+        localStorage.setItem('role', 'STUDENT')
+        localStorage.setItem('isAuthenticated', 'true')
     }
+
+    useEffect(() => {
+        console.log(userType)
+        if(userType === 'STUDENT') {
+          window.location.href = '/'
+        }
+    }, [userType]);
 
     return (
         <>

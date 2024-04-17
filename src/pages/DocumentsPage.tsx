@@ -11,9 +11,6 @@ import {DocumentForm} from "../components/Documents/DocumentForm";
 import DocumentTable from "../components/Documents/DocumentTable";
 import {Document, StatusType} from "../constants/types";
 import {Status} from "../components/StatusBar/Status";
-import axios from "axios";
-import {getAccessToken} from "../scripts/utils";
-import {convertToDocumentArray} from "../scripts/DocumentUtils";
 
 export const DocumentsPage = () => {
     const [formType, setFormType] = useState<'CV' | 'LETTER' | 'APP_PKG'>()
@@ -34,36 +31,33 @@ export const DocumentsPage = () => {
     }
 
     useEffect(() => {
-        getUserDocuments('curriculumvitae')
-        getUserDocuments('coverletter')
-        getUserDocuments('application-package')
+        initDocuments()
     }, []);
 
-    useEffect(() => {
-        // if(appPackagesList.length === 0)
-        //     return
-        // if(!('cover_letter' in appPackagesList[0]))
-        //     setAppPackagesList(feedApplicationCVandCL(resumeList, letterList, appPackagesList))
-        console.log(appPackagesList)
-    }, [appPackagesList]);
+    function initDocuments(){
+        // Fetch user documents
+        const documents = localStorage.getItem('documents') || '[]'
+        const docList = JSON.parse(documents)
+        console.log(docList)
+        let resumes: Document[] = []
+        let letters: Document[] = []
+        let appPackages: Document[] = []
 
-    function getUserDocuments(docType:string){
-        axios.get(`http://localhost:8000/api/${docType}/`, {
-                headers: {
-                    Authorization: `Bearer ${getAccessToken()}`,
-                    "Content-Type": 'multipart/form-data'
-                },
+        const userDocuments = docList.forEach((doc: Document) => {
+            if(doc.type == 'CV'){
+                resumes.push(doc)
+            } else if(doc.type == 'LETTER'){
+                letters.push(doc)
+            } else if(doc.type == 'APP_PKG'){
+                appPackages.push(doc)
             }
-        ).then(res => {
-            if(docType === 'curriculumvitae')
-                setResumeList(convertToDocumentArray(res.data, docType))
-            if(docType === 'coverletter')
-                setLetterList(convertToDocumentArray(res.data, docType))
-            if(docType === 'application-package')
-                setAppPackagesList(convertToDocumentArray(res.data, docType))
-        }).catch(err => {
-            console.log(err.response.data)
         })
+
+        setResumeList(resumes)
+        setLetterList(letters)
+        setAppPackagesList(appPackages)
+
+        console.log(resumes, letters, appPackages)
     }
 
     return (

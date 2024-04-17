@@ -106,19 +106,19 @@ export default function JobsView(props: CandidateViewProps) {
                       </a>
                     </div>
                   </li>
-                  {document.file2 && <li className="flex items-center justify-between py-3 pl-3 pr-4 text-sm">
+                  {document.cover_letter && <li className="flex items-center justify-between py-3 pl-3 pr-4 text-sm">
                     <div className="flex w-0 flex-1 items-center">
                       <PaperClipIcon
                         className="h-5 w-5 flex-shrink-0 text-gray-400"
                         aria-hidden="true"
                       />
                       <span className="ml-2 w-0 flex-1 truncate">
-                      Cover Letter: {document.file2?.split('/').pop()}
+                      Cover Letter: {document.cover_letter?.split('/').pop()}
                       </span>
                     </div>
                     <div className="ml-4 flex-shrink-0">
                       <a
-                        href={"http://localhost:8000" + document.file2}
+                        href={"http://localhost:8000" + document.cover_letter}
                         target="_blank"
                         className="font-medium text-indigo-600 hover:text-indigo-500"
                       >
